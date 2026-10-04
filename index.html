@@ -70,7 +70,7 @@ nav#bn div{text-align:center;padding:10px 2px;font-size:.85rem;font-weight:600;c
 </style>
 </head>
 <body>
-<header><h1 onclick="home()">🇫🇷 Le français <small style="font-weight:500;opacity:.85">· 学法语</small></h1><span class="pill" id="pIpa" onclick="toggleIpa()">IPA</span><span class="pill" id="pFlame">🔥 0</span><span class="pill" id="pXp">⭐ 0</span><span class="pill" id="pProf" onclick="profOpen()">👤 登录</span></header>
+<header><h1 onclick="home()">🇫🇷 Le français <small style="font-weight:500;opacity:.85">· 学法语</small></h1><span class="pill" id="pVoice" onclick="toggleVoice()">🎙️ 女声</span><span class="pill" id="pIpa" onclick="toggleIpa()">IPA</span><span class="pill" id="pFlame">🔥 0</span><span class="pill" id="pXp">⭐ 0</span><span class="pill" id="pProf" onclick="profOpen()">👤 登录</span></header>
 <main id="app"></main>
 <nav id="bn"><div id="n0" onclick="home()"><span>🏠</span>学习</div><div id="n1" onclick="pron()"><span>🗣️</span>发音</div><div id="n2" onclick="gram()"><span>📘</span>语法</div><div id="n3" onclick="search()"><span>🔍</span>搜索</div></nav>
 <div id="prof" class="sheet" onclick="if(event.target===this)profClose()"><div class="sbox">
@@ -127,9 +127,11 @@ async function profGo(mode){const n=document.getElementById("pn").value.trim(),p
 function profOut(){if(!confirm("退出登录？你的进度仍保存在服务器上，用用户名和密码可以再次登录。"))return;
   try{localStorage.removeItem("frName");localStorage.removeItem("frA1");localStorage.setItem("frCode",rndCode())}catch(e){}location.reload()}
 /* ---------- audio ---------- */
-let AMAP={},AUD=null;fetch("audio/map.json").then(r=>r.json()).then(m=>AMAP=m).catch(()=>{});
-function say(t){const k=String(t);
-  if(AMAP[k]){try{speechSynthesis.cancel();if(AUD)AUD.pause();AUD=new Audio("audio/"+AMAP[k]);AUD.play().catch(()=>tts(k));return}catch(e){}}
+const AMAPS={};["f","m"].forEach(g=>fetch("audio/map_"+g+".json").then(r=>r.json()).then(m=>AMAPS[g]=m).catch(()=>{}));let AUD=null;
+const vg=()=>S.vg==="m"?"m":"f";
+function toggleVoice(){S.vg=vg()==="f"?"m":"f";save();say("Bonjour, je suis votre professeur de français.")}
+function say(t){const k=String(t),g=vg(),m=AMAPS[g]||{};
+  if(m[k]){try{speechSynthesis.cancel();if(AUD)AUD.pause();AUD=new Audio("audio/"+g+"/"+m[k]);AUD.play().catch(()=>tts(k));return}catch(e){}}
   tts(k)}
 function tts(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/…/g,""));u.lang="fr-FR";u.rate=.8;const v=speechSynthesis.getVoices().find(x=>/^fr/i.test(x.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
 const q1=s=>String(s).replace(/'/g,"\\'");
@@ -148,7 +150,7 @@ const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOStri
 const INTV=[1,2,4,8,16,32];
 const dueItems=()=>Object.entries(S.rev||{}).filter(([k,e])=>e.d<=tdy()&&BYFR[k]).map(([k])=>BYFR[k]);
 function touchStreak(){const t=tdy();if(S.last===t)return;const y=addDays(-1);S.streak=(S.last===y)?(S.streak||0)+1:1;S.last=t}
-function head(){document.getElementById("pXp").textContent="⭐ "+S.xp;document.getElementById("pFlame").textContent="🔥 "+((S.last===tdy()||S.last===addDays(-1))?S.streak:0);document.getElementById("pProf").textContent=PNAME?"👤 "+PNAME:"👤 登录";document.body.classList.toggle("hideipa",!S.ipa);document.getElementById("pIpa").style.opacity=S.ipa?1:.55}
+function head(){document.getElementById("pXp").textContent="⭐ "+S.xp;document.getElementById("pFlame").textContent="🔥 "+((S.last===tdy()||S.last===addDays(-1))?S.streak:0);document.getElementById("pProf").textContent=PNAME?"👤 "+PNAME:"👤 登录";document.body.classList.toggle("hideipa",!S.ipa);document.getElementById("pIpa").style.opacity=S.ipa?1:.55;document.getElementById("pVoice").textContent=vg()==="m"?"🎙️ 男声":"🎙️ 女声"}
 function toggleIpa(){S.ipa=!S.ipa;save();if(cur)cur()}
 let cur=null;
 function nav(i){[0,1,2,3].forEach(k=>document.getElementById("n"+k).classList.toggle("on",k===i))}

@@ -6,7 +6,7 @@
 
 ![level](https://img.shields.io/badge/niveau-A1-0055a4?style=for-the-badge)
 ![words](https://img.shields.io/badge/vocabulaire-302%20mots-ef4135?style=for-the-badge)
-![audio](https://img.shields.io/badge/audio-387%20MP3-2bb673?style=for-the-badge)
+![audio](https://img.shields.io/badge/audio-774%20MP3%20(2%20voix)-2bb673?style=for-the-badge)
 ![deps](https://img.shields.io/badge/d%C3%A9pendances-0-457b9d?style=for-the-badge)
 
 **单页网页应用，无需安装，电脑和手机都能用。**
@@ -46,7 +46,7 @@ python -m http.server 8000
 index.html        应用（界面 + 逻辑）
 data.js           全部内容：主题与单词、句子、发音指南、语法
 audio/            MP3 + map.json（法语文本 → 文件）
-build_audio.py    用 edge-tts（fr-FR-DeniseNeural）生成语音
+build_audio.py    用 edge-tts（fr-FR-VivienneMultilingualNeural + RemyMultilingualNeural）生成语音
 ```
 
 重新生成语音：`pip install edge-tts` 后运行 `python build_audio.py`（需要 Node.js 来读取 `data.js`）。
