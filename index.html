@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Le français · 学法语</title>
+<meta name="description" content="专为中国学生设计的法语 A1 学习应用：词汇、发音、语法、测验与间隔复习。">
+<meta name="theme-color" content="#0055a4">
+<style>
+:root{--blue:#0055a4;--red:#ef4135;--ink:#1f2937;--mut:#6b7280;--ok:#2bb673;--bg:#f5f7fb;--line:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:calc(64px + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));background:var(--blue);color:#fff}
+header h1{font-size:1.1rem;margin:0;flex:1;cursor:pointer;white-space:nowrap}
+.pill{background:rgba(255,255,255,.18);border-radius:999px;padding:5px 10px;font-size:.8rem;font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
+main{max-width:1040px;margin:0 auto;padding:14px 14px 24px}
+.col{display:flex;flex-direction:column;gap:16px}
+h2{font-size:1.05rem;margin:0 0 8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer;background:var(--blue);color:#fff;user-select:none;border:0;font-family:inherit}
+.btn.alt{background:#e8edf5;color:var(--ink)}.btn.red{background:var(--red)}.btn.ok{background:var(--ok)}
+.btn:disabled{opacity:.5;cursor:default}
+.seg{display:flex;background:#e8edf5;border-radius:12px;padding:4px;gap:4px;max-width:460px}
+.seg div{flex:1;text-align:center;padding:7px 4px;border-radius:9px;font-weight:600;font-size:.88rem;cursor:pointer;color:var(--mut);user-select:none}
+.seg div.on{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.lab{font-size:.72rem;color:var(--mut);font-weight:700;letter-spacing:.04em}
+.val{font-size:1.3rem;font-weight:800;line-height:1.2;margin:2px 0 8px}.val small{font-size:.8rem;font-weight:600;color:var(--mut)}
+.bar{height:4px;background:#e5e7eb;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);border-radius:4px;transition:width .5s}
+.sub{font-size:.78rem;color:var(--mut);margin-top:8px}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.act{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);cursor:pointer;font-weight:700;min-height:54px;line-height:1.2}
+.act small{display:block;font-weight:500;font-size:.78rem;color:var(--mut);margin-top:2px}
+.act.main{background:var(--blue);border-color:var(--blue);color:#fff}.act.main small{color:#cfe0f5}
+.act.dis{cursor:default;color:var(--mut);background:#f1f6f2}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.tile{display:grid;grid-template-columns:36px minmax(0,1fr);column-gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:10px 12px;cursor:pointer;min-height:60px}
+.tile:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}.tile .ic{font-size:1.6rem;text-align:center}
+.tile b{display:block;font-size:.95rem;line-height:1.2}.tile .f{font-size:.75rem;color:var(--mut)}
+.meta{display:flex;align-items:center;gap:8px;margin-top:6px}.meta .bar{flex:1}.meta span{font-size:.72rem;color:var(--mut);min-width:28px;text-align:right}.tile.done .meta span{color:var(--ok);font-weight:800}
+.sec h2 .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-size:.78rem;margin-right:8px}
+.row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;cursor:pointer}
+.row .e{font-size:1.5rem;width:34px;text-align:center}.row .t{flex:1;min-width:0}.row .t b{font-size:1.05rem}.row .t small{display:block;color:var(--mut)}
+.row .ipa{color:var(--blue);font-size:.85rem;margin-left:6px}.hideipa .ipa{display:none}
+.row .sp{font-size:1.2rem;color:var(--blue)}
+.dot{width:10px;height:10px;border-radius:50%;background:#d1d5db;flex:0 0 auto}.dot.k{background:var(--ok)}
+.fl{background:#fff;border:1px solid var(--line);border-radius:18px;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.06)}
+.fl .big{font-size:2.2rem;font-weight:800}.fl .em{font-size:3rem}.fl .ipa{color:var(--blue);font-size:1.1rem;margin-top:6px}.fl .zh{font-size:1.6rem;margin-top:10px}
+.qh{display:flex;align-items:center;gap:10px;margin-bottom:10px}.qh .bar{flex:1;height:8px}
+.q{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
+.q .big{font-size:2rem;font-weight:800;margin:6px 0}.q .em{font-size:3rem}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.opt{padding:14px 10px;border:2px solid var(--line);border-radius:12px;background:#fff;font-size:1.05rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink)}
+.opt:hover{border-color:var(--blue)}.opt.good{background:#dcf5e6;border-color:var(--ok)}.opt.bad{background:#fde4e2;border-color:var(--red)}
+.inp{width:100%;padding:12px;font-size:1.1rem;border:2px solid var(--line);border-radius:12px;font-family:inherit;margin-top:12px;text-align:center}
+.acc{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}.acc span{padding:6px 11px;background:#e8edf5;border-radius:8px;font-weight:700;cursor:pointer;user-select:none}
+.fb{min-height:1.6em;margin-top:12px;font-weight:700}.fb.g{color:var(--ok)}.fb.b{color:var(--red)}
+.tip{background:#eef4fc;border-left:4px solid var(--blue);border-radius:8px;padding:10px 12px;font-size:.92rem;line-height:1.6}
+details.gr{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;padding:0 14px}
+details.gr summary{padding:12px 0;font-weight:700;cursor:pointer}details.gr .b p{margin:6px 0;line-height:1.7}
+.ex{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;background:#f4f7fb;margin:5px 0;cursor:pointer}.ex b{font-size:1rem}.ex small{color:var(--mut);margin-left:auto;text-align:right}
+.pr{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}.pr h3{margin:0 0 6px;font-size:1.05rem;color:var(--blue)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:16px}.sheet.on{display:flex}
+.sbox{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:400px;max-height:90vh;overflow:auto}
+.sbox input{width:100%;padding:12px;margin:4px 0;font-size:16px;border:1px solid #ccc;border-radius:10px;font-family:inherit}
+nav#bn{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid var(--line);z-index:9;padding-bottom:env(safe-area-inset-bottom)}
+nav#bn div{text-align:center;padding:10px 2px;font-size:.85rem;font-weight:600;cursor:pointer;color:var(--mut)}nav#bn div.on{color:var(--blue)}nav#bn span{display:block;font-size:1.3rem;line-height:1.2}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:999px;font-size:.9rem;z-index:50;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}.stats .me{grid-column:1/-1}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tile{grid-template-columns:28px minmax(0,1fr);column-gap:8px;padding:8px 10px}.tile .ic{font-size:1.3rem}.acts{grid-template-columns:1fr}.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1 onclick="home()">🇫🇷 Le français <small style="font-weight:500;opacity:.85">· 学法语</small></h1><span class="pill" id="pIpa" onclick="toggleIpa()">IPA</span><span class="pill" id="pFlame">🔥 0</span><span class="pill" id="pXp">⭐ 0</span><span class="pill" id="pProf" onclick="profOpen()">👤 登录</span></header>
+<main id="app"></main>
+<nav id="bn"><div id="n0" onclick="home()"><span>🏠</span>学习</div><div id="n1" onclick="pron()"><span>🗣️</span>发音</div><div id="n2" onclick="gram()"><span>📘</span>语法</div><div id="n3" onclick="search()"><span>🔍</span>搜索</div></nav>
+<div id="prof" class="sheet" onclick="if(event.target===this)profClose()"><div class="sbox">
+ <h3 style="margin:0 0 6px">👤 我的账号</h3>
+ <p style="font-size:.9rem;color:var(--mut);margin:0 0 10px">登录后，可以在任何设备上找回学习进度。没有账号？输入用户名和密码即可创建。</p>
+ <input id="pn" placeholder="用户名" autocomplete="username" autocapitalize="none">
+ <input id="pp" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password" onkeydown="if(event.key==='Enter')profGo('login')">
+ <p id="pmsg" style="font-size:.85rem;color:#c0392b;min-height:1.2em;margin:4px 0"></p>
+ <small style="color:var(--mut)">⚠️ 没有“忘记密码”功能，请牢记密码。</small>
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><div class="btn" onclick="profGo('login')">登录</div><div class="btn red" onclick="profGo('new')">创建账号</div><div class="btn alt" onclick="profSkip()">以后再说</div><div class="btn alt" id="pOut" style="display:none" onclick="profOut()">退出登录</div></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script src="data.js"></script>
+<script>
+/* ---------- état et sauvegarde ---------- */
+const $=document.getElementById("app"),tdy=()=>new Date().toISOString().slice(0,10);
+let S=null;try{S=JSON.parse(localStorage.getItem("frA1")||"null")}catch(e){}
+S=Object.assign({xp:0,ev:{},rev:{},streak:0,last:"",day:null,ipa:true,ts:0},S||{});
+const API=location.hostname.endsWith("github.io")?"https://chinois.45-192-198-98.sslip.io/api.php":"api.php";
+const rndCode=()=>[...crypto.getRandomValues(new Uint8Array(12))].map(b=>"abcdefghjkmnpqrstuvwxyz23456789"[b%31]).join("");
+let CODE="",PNAME="";try{CODE=localStorage.getItem("frCode")||"";PNAME=localStorage.getItem("frName")||""}catch(e){}
+if(!CODE){CODE=rndCode();try{localStorage.setItem("frCode",CODE)}catch(e){}}
+let pushT=null;
+const save=()=>{S.ts=Date.now();try{localStorage.setItem("frA1",JSON.stringify(S))}catch(e){}clearTimeout(pushT);pushT=setTimeout(push,700);head()};
+async function push(){try{await fetch(API+"?k="+CODE,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(S)})}catch(e){}}
+function mergeS(A,B){const M=JSON.parse(JSON.stringify(A));M.ev=M.ev||{};
+  Object.entries(B.ev||{}).forEach(([k,a])=>{M.ev[k]=[...new Set([...(M.ev[k]||[]),...a])]});
+  M.rev=M.rev||{};Object.entries(B.rev||{}).forEach(([k,e])=>{if(!M.rev[k]||(e.t||0)>(M.rev[k].t||0))M.rev[k]=e});
+  M.xp=Math.max(A.xp||0,B.xp||0);if((B.last||"")>(A.last||"")){M.last=B.last;M.streak=B.streak}else if(B.last===A.last)M.streak=Math.max(A.streak||0,B.streak||0);
+  if(B.day&&(!M.day||B.day.d>M.day.d||(B.day.d===M.day.d&&B.day.n>M.day.n)))M.day=B.day;
+  M.ts=Math.max(A.ts||0,B.ts||0);return M}
+async function pull(){try{const r=await fetch(API+"?k="+CODE,{cache:"no-store"});if(!r.ok)return;const t=(await r.text()).trim();
+  if(!t||t==="null"){push();return}
+  const R=JSON.parse(t),M=mergeS(S,R),a=JSON.stringify(M);
+  if(a!==JSON.stringify(S)){S=M;try{localStorage.setItem("frA1",a)}catch(e){}head();if(cur)cur()}
+  if(a!==JSON.stringify(R))push()}catch(e){}}
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),2200)}
+/* ---------- compte (nom + mot de passe) ---------- */
+async function deriveKey(name,pw){const en=new TextEncoder(),km=await crypto.subtle.importKey("raw",en.encode(pw),"PBKDF2",false,["deriveBits"]);
+  const bits=await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:en.encode("frA1:"+name.trim().toLowerCase()),iterations:200000},km,160);
+  return [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,"0")).join("")}
+function profOpen(){document.getElementById("pmsg").textContent="";document.getElementById("pn").value=PNAME;document.getElementById("pp").value="";document.getElementById("pOut").style.display=PNAME?"inline-flex":"none";document.getElementById("prof").classList.add("on")}
+function profClose(){document.getElementById("prof").classList.remove("on")}
+function profSkip(){try{localStorage.setItem("frSkip","1")}catch(e){}profClose()}
+async function profGo(mode){const n=document.getElementById("pn").value.trim(),pw=document.getElementById("pp").value,m=document.getElementById("pmsg");
+  if(n.length<2||pw.length<6){m.textContent="用户名至少 2 个字符，密码至少 6 位。";return}
+  if(!window.crypto||!crypto.subtle){m.textContent="请使用 https 打开本网站。";return}
+  m.textContent="连接中…";
+  try{const k=await deriveKey(n,pw),r=await fetch(API+"?k="+k,{cache:"no-store"});if(!r.ok)throw 0;const t=(await r.text()).trim();
+    if(t==="null"&&mode==="login"){m.textContent="没有找到这个账号：请检查用户名和密码，或点击“创建账号”。";return}
+    CODE=k;PNAME=n;try{localStorage.setItem("frCode",k);localStorage.setItem("frName",n)}catch(e){}
+    S.ts=0;await pull();profClose();head();if(cur)cur();toast(t==="null"?"✅ 账号已创建":"✅ 已登录："+n)}
+  catch(e){m.textContent="服务器暂时无法连接，请稍后再试。"}}
+function profOut(){if(!confirm("退出登录？你的进度仍保存在服务器上，用用户名和密码可以再次登录。"))return;
+  try{localStorage.removeItem("frName");localStorage.removeItem("frA1");localStorage.setItem("frCode",rndCode())}catch(e){}location.reload()}
+/* ---------- audio ---------- */
+let AMAP={},AUD=null;fetch("audio/map.json").then(r=>r.json()).then(m=>AMAP=m).catch(()=>{});
+function say(t){const k=String(t);
+  if(AMAP[k]){try{speechSynthesis.cancel();if(AUD)AUD.pause();AUD=new Audio("audio/"+AMAP[k]);AUD.play().catch(()=>tts(k));return}catch(e){}}
+  tts(k)}
+function tts(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/…/g,""));u.lang="fr-FR";u.rate=.8;const v=speechSynthesis.getVoices().find(x=>/^fr/i.test(x.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+const q1=s=>String(s).replace(/'/g,"\\'");
+/* ---------- données dérivées ---------- */
+const ALL=THEMES.flatMap(t=>t.items.map(i=>Object.assign({th:t.id},i)));
+const BYFR={};ALL.forEach(i=>{if(!BYFR[i.fr])BYFR[i.fr]=i});
+const isK=fr=>((S.ev||{})[fr]||[]).length>=2;
+const thKnown=t=>t.items.filter(i=>isK(i.fr)).length;
+const mastery=t=>t.items.length?thKnown(t)/t.items.length*100:0;
+const lvOf=xp=>Math.floor(Math.sqrt(xp/40))+1;
+const goal=7;
+const dayN=()=>(S.day&&S.day.d===tdy())?S.day.n:0;
+const bar=p=>`<div class="bar"><i style="width:${Math.max(0,Math.min(100,p))}%"></i></div>`;
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const INTV=[1,2,4,8,16,32];
+const dueItems=()=>Object.entries(S.rev||{}).filter(([k,e])=>e.d<=tdy()&&BYFR[k]).map(([k])=>BYFR[k]);
+function touchStreak(){const t=tdy();if(S.last===t)return;const y=addDays(-1);S.streak=(S.last===y)?(S.streak||0)+1:1;S.last=t}
+function head(){document.getElementById("pXp").textContent="⭐ "+S.xp;document.getElementById("pFlame").textContent="🔥 "+((S.last===tdy()||S.last===addDays(-1))?S.streak:0);document.getElementById("pProf").textContent=PNAME?"👤 "+PNAME:"👤 登录";document.body.classList.toggle("hideipa",!S.ipa);document.getElementById("pIpa").style.opacity=S.ipa?1:.55}
+function toggleIpa(){S.ipa=!S.ipa;save();if(cur)cur()}
+let cur=null;
+function nav(i){[0,1,2,3].forEach(k=>document.getElementById("n"+k).classList.toggle("on",k===i))}
+/* ---------- accueil ---------- */
+function tileH(t){const m=mastery(t),ok=m>=85;return `<div class="tile${ok?" done":""}" style="--c:${t.color}" onclick="theme('${t.id}')"><div class="ic">${t.icon}</div><div><b>${t.zh}</b><div class="f">${t.fr}</div><div class="meta">${bar(m)}<span>${ok?"✓":Math.round(m)+"%"}</span></div></div></div>`}
+function nextTheme(){return THEMES.slice().sort((a,b)=>a.step-b.step).find(t=>mastery(t)<85)}
+function home(){cur=home;nav(0);head();const L=lvOf(S.xp),lo=40*(L-1)**2,hi=40*L*L,tot=ALL.length,kn=ALL.filter(i=>isK(i.fr)).length,due=dueItems().length,nx=nextTheme();
+  const acts=[nx?`<div class="act main" onclick="theme('${nx.id}')"><span style="font-size:1.4rem">▶</span><div>继续学习<small>${nx.icon} ${nx.zh} · ${nx.fr}</small></div></div>`:`<div class="act dis">🎉 A1 词汇全部学完！</div>`,
+    due?`<div class="act" onclick="startReview()"><span style="font-size:1.4rem">🔁</span><div>今日复习<small>${due} 个单词需要复习</small></div></div>`:`<div class="act dis"><span style="font-size:1.4rem">✅</span><div>复习已完成<small>今天没有需要复习的单词</small></div></div>`].join("");
+  $.innerHTML=`<div class="col"><div class="stats"><div class="card me"><div class="lab">等级</div><div class="val">Niveau ${L} <small>· ⭐ ${S.xp} XP</small></div>${bar((S.xp-lo)/(hi-lo)*100)}</div>`+
+  `<div class="card"><div class="lab">今日目标</div><div class="val">${dayN()}<small> / ${goal} 个新词</small></div>${bar(dayN()/goal*100)}<div class="sub">🔥 连续学习 ${(S.last===tdy()||S.last===addDays(-1))?S.streak:0} 天</div></div>`+
+  `<div class="card"><div class="lab">A1 总进度</div><div class="val">${Math.round(kn/tot*100)} %<small> · ${kn}/${tot} 词</small></div>${bar(kn/tot*100)}<div class="sub">一个词在 2 种不同题型中答对，才算“掌握”</div></div></div>`+
+  `<div class="acts">${acts}</div>`+
+  Object.entries(STEPS).map(([s,name])=>`<section class="sec"><h2><span class="n">${s}</span>${name.replace(/^第.步 · /,"")}</h2><div class="grid">${THEMES.filter(t=>t.step==s).map(tileH).join("")}</div></section>`).join("")+`</div>`}
+/* ---------- page d'un thème ---------- */
+let TH=null,TAB="list",FI=0,FF=false;
+function theme(id,tab){TH=THEMES.find(t=>t.id===id);if(tab)TAB=tab;else if(!tab&&cur!==themeV)TAB="list";cur=themeV;nav(0);themeV()}
+function themeV(){const t=TH,m=mastery(t),tabs=[["cards","卡片"],["list","单词表"],["quiz","测验"],["type","拼写"]];
+  let body="";
+  if(TAB==="list")body=t.items.map(i=>rowH(i)).join("");
+  else if(TAB==="cards"){const i=t.items[FI%t.items.length];body=`<div class="fl" onclick="flip()">${FF?`<div class="em">${i.e}</div><div class="big">${i.fr}</div><div class="ipa">/${i.ipa}/</div><div class="zh">${i.zh}</div>`:`<div class="big">${i.fr}</div><div class="sub">点击卡片查看翻译</div>`}</div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:12px;align-items:center"><div class="btn alt" onclick="fcard(-1)">‹</div><div class="btn alt" onclick="say('${q1(i.fr)}')">🔊 听发音</div><div class="btn" onclick="fcard(1)">›</div></div><p style="text-align:center;color:var(--mut)">${FI%t.items.length+1} / ${t.items.length}</p>`}
+  else if(TAB==="quiz"){body=`<div class="card" style="text-align:center"><p>10 道题，题型包括：看词选义、看义选词、听音选词${t.items.some(i=>i.g||/^(le|la) /.test(i.fr))?"、选冠词":""}。</p><div class="btn" onclick="startQuiz(TH.items,'${q1(t.zh)}',10)">开始测验</div></div>`}
+  else body=`<div class="card" style="text-align:center"><p>看中文，拼写法语单词（注意重音符号！）。</p><div class="btn" onclick="startQuiz(TH.items,'${q1(t.zh)} · 拼写',10,['ty'])">开始拼写练习</div></div>`;
+  const ph=(PHR[t.id]||[]).map(p=>`<div class="ex" onclick="say('${q1(p[0])}')">🔊 <b>${p[0]}</b><small>${p[1]}</small></div>`).join("");
+  $.innerHTML=`<div class="col"><div style="display:flex;align-items:center;gap:12px"><div class="btn alt" onclick="home()">‹</div><div style="flex:1"><div style="font-size:1.2rem;font-weight:800">${t.icon} ${t.zh}</div><div class="sub" style="margin:0">${t.fr} · 已掌握 ${thKnown(t)}/${t.items.length}</div></div></div>${bar(m)}
+  <div class="seg">${tabs.map(([k,n])=>`<div class="${TAB===k?"on":""}" onclick="TAB='${k}';themeV()">${n}</div>`).join("")}</div>${body}${ph?`<h2>💬 常用句子 <small style="color:var(--mut);font-weight:500">· 不计入进度</small></h2>${ph}`:""}</div>`;
+  if(TAB==="cards"&&FF===false)setTimeout(()=>{},0)}
+function rowH(i){return `<div class="row" onclick="say('${q1(i.fr)}')"><div class="e">${i.e}</div><div class="t"><b>${i.fr}</b><span class="ipa">/${i.ipa}/</span><small>${i.zh}</small></div><span class="dot${isK(i.fr)?" k":""}"></span><span class="sp">🔊</span></div>`}
+function flip(){FF=!FF;const i=TH.items[FI%TH.items.length];if(FF)say(i.fr);themeV()}
+function fcard(d){FI=(FI+d+TH.items.length)%TH.items.length;FF=false;themeV()}
+/* ---------- quiz ---------- */
+let Q=null;
+const norm=s=>s.toLowerCase().replace(/[’]/g,"'").replace(/[.?!…,;:]/g,"").replace(/\s+/g," ").trim();
+const noAcc=s=>norm(s).normalize("NFD").replace(/[̀-ͯ]/g,"");
+const hasArt=i=>i.g||/^(le|la) /.test(i.fr);
+const gOf=i=>i.g||(i.fr.startsWith("la ")?"f":"m");
+function pickType(i,allowed){const done=(S.ev||{})[i.fr]||[];let ts=allowed||["fz","zf","au","ty","ar"];ts=ts.filter(t=>t!=="ar"||hasArt(i)).filter(t=>t!=="ty"||i.fr.length<=24);
+  const fresh=ts.filter(t=>!done.includes(t));const p=fresh.length?fresh:ts;return p[Math.random()*p.length|0]}
+function distract(i,key,n=3){const pool=shuf(ALL.filter(x=>x.fr!==i.fr&&x[key]!==i[key]));const out=[];pool.forEach(x=>{if(out.length<n&&!out.some(o=>o[key]===x[key]))out.push(x)});return out}
+function startQuiz(items,title,n,allowed){const list=shuf(items).slice(0,n).map(i=>({i,t:pickType(i,allowed)}));Q={list,k:0,ok:0,title,done:false};nav(0);cur=quizV;quizV()}
+function startReview(){const d=dueItems();if(!d.length){toast("今天没有需要复习的单词");return}startQuiz(d,"今日复习",Math.min(15,d.length))}
+function quizV(){if(!Q)return home();if(Q.k>=Q.list.length)return quizEnd();
+  const {i,t}=Q.list[Q.k];let h="";
+  const mk=(arr,key,fn)=>shuf(arr).map(x=>`<button class="opt" onclick="answer(this,${x===i?1:0},'${q1(x[key])}')">${x[key]}</button>`).join("");
+  if(t==="fz")h=`<div class="em">${i.e}</div><div class="big">${i.fr}</div><div class="btn alt" onclick="say('${q1(i.fr)}')">🔊</div><div class="sub">选出正确的中文意思</div><div class="opts">${mk([i,...distract(i,"zh")],"zh")}</div>`;
+  else if(t==="zf")h=`<div class="em">${i.e}</div><div class="big">${i.zh}</div><div class="sub">选出对应的法语</div><div class="opts">${mk([i,...distract(i,"fr")],"fr")}</div>`;
+  else if(t==="au")h=`<div class="em">🔊</div><div class="btn" onclick="say('${q1(i.fr)}')">▶ 播放</div><div class="sub">听一听，选出你听到的词</div><div class="opts">${mk([i,...distract(i,"fr")],"fr")}</div>`;
+  else if(t==="ar"){const g=gOf(i),base=i.fr.replace(/^(le|la|l') ?/,""),els=/^[aeiouyhâàéèêîôûœ]/i.test(base);const opts=["un","une"];
+    h=`<div class="em">${i.e}</div><div class="big">… ${base}</div><div class="sub">${i.zh} · 选出正确的不定冠词（un 阳性 / une 阴性）</div><div class="opts">${opts.map(o=>`<button class="opt" onclick="answer(this,${(o==="un")===(g==="m")?1:0},'${o==="un"?"un":"une"}','${g==="m"?"un":"une"}')">${o}</button>`).join("")}</div>`}
+  else h=`<div class="em">${i.e}</div><div class="big">${i.zh}</div><div class="sub">拼写出法语（注意重音）</div><input class="inp" id="ty" autocomplete="off" autocapitalize="none" spellcheck="false" onkeydown="if(event.key==='Enter')tyCheck()"><div class="acc">${["é","è","ê","à","â","ç","î","ô","ù","û","œ"].map(c=>`<span onclick="insA('${c}')">${c}</span>`).join("")}</div><div style="margin-top:12px" id="tyb"><div class="btn" onclick="tyCheck()">检查</div> <div class="btn alt" onclick="tyGive()">不知道</div></div>`;
+  $.innerHTML=`<div class="col"><div class="qh"><div class="btn alt" onclick="if(confirm('退出测验？'))home()">✕</div>${bar(Q.k/Q.list.length*100)}<b>${Q.k+1}/${Q.list.length}</b></div><div class="q" id="qb">${h}<div class="fb" id="fb"></div><div id="nx"></div></div></div>`;
+  if(t==="au")setTimeout(()=>say(i.fr),300);if(t==="ty")setTimeout(()=>{const e=document.getElementById("ty");e&&e.focus()},50)}
+function insA(c){const e=document.getElementById("ty");e.value+=c;e.focus()}
+function record(i,t,ok){S.rev=S.rev||{};const e=S.rev[i.fr]||{l:0};
+  if(ok){e.l=Math.min(5,(e.l||0)+1);const ev=S.ev[i.fr]=S.ev[i.fr]||[];const was=ev.length>=2;if(!ev.includes(t))ev.push(t);S.xp+=10;
+    if(!was&&ev.length>=2){S.xp+=15;if(S.day&&S.day.d===tdy())S.day.n++;else S.day={d:tdy(),n:1};toast("🎉 新掌握："+i.fr)}}
+  else e.l=0;
+  e.d=addDays(INTV[e.l]);e.t=Date.now();S.rev[i.fr]=e;touchStreak();save()}
+function answer(btn,ok,val,good){const {i,t}=Q.list[Q.k];if(Q.done)return;Q.done=true;
+  document.querySelectorAll(".opt").forEach(b=>{b.disabled=true});btn.classList.add(ok?"good":"bad");
+  if(!ok){document.querySelectorAll(".opt").forEach(b=>{if((good&&b.textContent===good)||(!good&&(b.textContent===i.fr||b.textContent===i.zh)))b.classList.add("good")})}
+  fin(i,t,!!ok)}
+function tyCheck(){const {i,t}=Q.list[Q.k];if(Q.done)return;const v=document.getElementById("ty").value;if(!v.trim())return;
+  const ok=norm(v)===norm(i.fr),near=!ok&&noAcc(v)===noAcc(i.fr);Q.done=true;fin(i,t,ok||near,near?"重音符号不对："+i.fr:null)}
+function tyGive(){const {i,t}=Q.list[Q.k];if(Q.done)return;Q.done=true;fin(i,t,false)}
+function fin(i,t,ok,msg){record(i,t,ok);if(ok)Q.ok++;const fb=document.getElementById("fb");
+  fb.className="fb "+(ok?"g":"b");fb.innerHTML=ok?(msg?"👍 差不多！"+msg:"✅ 正确！"):`❌ 正确答案：<b>${i.fr}</b> /${i.ipa}/ ${i.zh}`;
+  if(t==="ty"){const b=document.getElementById("tyb");if(b)b.style.display="none"}
+  say(i.fr);document.getElementById("nx").innerHTML=`<div class="btn" style="margin-top:12px" onclick="nextQ()">${Q.k+1>=Q.list.length?"完成":"下一题"} ›</div>`}
+function nextQ(){Q.k++;Q.done=false;quizV()}
+function quizEnd(){const n=Q.list.length,p=Math.round(Q.ok/n*100);S.xp+=Q.ok>=n*0.8?20:0;save();
+  $.innerHTML=`<div class="col"><div class="q"><div class="em">${p>=80?"🏆":p>=50?"👍":"💪"}</div><div class="big">${Q.ok} / ${n}</div><p>${p>=80?"太棒了！":p>=50?"不错，继续加油！":"再练习一下吧！"}${p>=80?" 额外奖励 +20 XP":""}</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><div class="btn" onclick="home()">返回首页</div>${TH&&Q.title!=="今日复习"?`<div class="btn alt" onclick="theme('${TH.id}','quiz')">回到本课</div>`:""}</div></div></div>`;Q=null}
+/* ---------- prononciation ---------- */
+function exRow(a){return `<div class="ex" onclick="say('${q1(a[0])}')">🔊 <b>${a[0]}</b><span style="color:var(--blue);font-size:.85rem" class="ipa">/${a[1]}/</span><small>${a[2]}</small></div>`}
+function pron(){cur=pron;nav(1);head();$.innerHTML=`<div class="col"><div><h2>🗣️ 发音指南</h2><div class="tip">法语的发音和拼写关系比较固定，但有几个音对中国学生特别难：<b>u、r、鼻元音、词尾不发音的辅音、联诵</b>。点击例词可以听发音。</div></div>${PRON.map(p=>`<div class="pr"><h3>${p.t}</h3><p style="margin:0 0 8px;line-height:1.7">${p.tip}</p>${p.ex.map(exRow).join("")}</div>`).join("")}</div>`}
+/* ---------- grammaire ---------- */
+function gram(){cur=gram;nav(2);head();$.innerHTML=`<div class="col"><h2>📘 语法要点</h2>${GRAM.map((g,k)=>`<details class="gr"${k===0?" open":""}><summary>${k+1}. ${g.t}</summary><div class="b">${g.b.map(p=>`<p>${p}</p>`).join("")}${g.ex.map(a=>`<div class="ex" onclick="say('${q1(a[0].split(" / ")[0])}')">🔊 <b>${a[0]}</b><small>${a[1]}</small></div>`).join("")}</div><div style="height:8px"></div></details>`).join("")}</div>`}
+/* ---------- recherche ---------- */
+function search(){cur=search;nav(3);head();$.innerHTML=`<div class="col"><h2>🔍 搜索单词</h2><input class="inp" style="margin:0;text-align:left" id="gq" placeholder="输入法语或中文…" oninput="sFill()" autocomplete="off"><div id="sr"></div></div>`;sFill()}
+function sFill(){const q=noAcc(document.getElementById("gq").value.trim()),sr=document.getElementById("sr");
+  const r=q?ALL.filter(i=>noAcc(i.fr).includes(q)||i.zh.includes(q)||i.ipa.includes(q)):ALL.slice(0,30);
+  sr.innerHTML=r.slice(0,80).map(rowH).join("")||`<div class="card" style="text-align:center;color:var(--mut)">没有找到</div>`}
+/* ---------- démarrage ---------- */
+head();home();pull();
+try{if(!PNAME&&!localStorage.getItem("frSkip"))setTimeout(profOpen,600)}catch(e){}
+if("serviceWorker" in navigator&&false)navigator.serviceWorker.register("sw.js");
+</script>
+</body>
+</html>
