@@ -128,8 +128,8 @@ function profOut(){if(!confirm("退出登录？你的进度仍保存在服务器
   try{localStorage.removeItem("frName");localStorage.removeItem("frA1");localStorage.setItem("frCode",rndCode())}catch(e){}location.reload()}
 /* ---------- audio ---------- */
 const AMAPS={};["f","m"].forEach(g=>fetch("audio/map_"+g+".json").then(r=>r.json()).then(m=>AMAPS[g]=m).catch(()=>{}));let AUD=null;
-const vg=()=>S.vg==="m"?"m":"f";
-function toggleVoice(){S.vg=vg()==="f"?"m":"f";save();say("Bonjour, je suis votre professeur de français.")}
+const vg=()=>S.vg==="f"?"f":"m";
+function toggleVoice(){S.vg=vg()==="m"?"f":"m";save();say("Bonjour, je suis votre professeur de français.")}
 function say(t){const k=String(t),g=vg(),m=AMAPS[g]||{};
   if(m[k]){try{speechSynthesis.cancel();if(AUD)AUD.pause();AUD=new Audio("audio/"+g+"/"+m[k]);AUD.play().catch(()=>tts(k));return}catch(e){}}
   tts(k)}
