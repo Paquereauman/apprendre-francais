@@ -243,6 +243,8 @@ function sFill(){const q=noAcc(document.getElementById("gq").value.trim()),sr=do
 head();home();pull();
 try{if(!PNAME&&!localStorage.getItem("frSkip"))setTimeout(profOpen,600)}catch(e){}
 if("serviceWorker" in navigator&&false)navigator.serviceWorker.register("sw.js");
+/* mise à jour automatique : si une nouvelle version est publiée, la page se recharge une fois */
+(async()=>{try{if(!/^https?:/.test(location.protocol))return;const r=await fetch(location.pathname,{cache:"reload"}),t=await r.text();let h=0;for(let i=0;i<t.length;i+=7)h=(h*31+t.charCodeAt(i))|0;const o=localStorage.getItem("frBuild");localStorage.setItem("frBuild",String(h));if(o&&o!==String(h))location.reload()}catch(e){}})();
 </script>
 </body>
 </html>
