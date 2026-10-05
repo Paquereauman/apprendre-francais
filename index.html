@@ -130,10 +130,15 @@ function profOut(){if(!confirm("退出登录？你的进度仍保存在服务器
 const AMAPS={};["f","m"].forEach(g=>fetch("audio/map_"+g+".json").then(r=>r.json()).then(m=>AMAPS[g]=m).catch(()=>{}));let AUD=null;
 const vg=()=>S.vg==="f"?"f":"m";
 function toggleVoice(){S.vg=vg()==="m"?"f":"m";save();say("Bonjour, je suis votre professeur de français.")}
-function say(t){const k=String(t),g=vg(),m=AMAPS[g]||{};
-  if(m[k]){try{speechSynthesis.cancel();if(AUD)AUD.pause();AUD=new Audio("audio/"+g+"/"+m[k]);AUD.play().catch(()=>tts(k));return}catch(e){}}
+const AU=new Audio();let SAYTOK=0;
+function stopAudio(){SAYTOK++;try{speechSynthesis.cancel()}catch(e){}try{AU.onended=AU.onerror=null;AU.pause();AU.removeAttribute("src");AU.load()}catch(e){}}
+function say(t){const k=String(t),g=vg(),m=AMAPS[g]||{};stopAudio();const tok=SAYTOK;
+  if(m[k]){try{AU.src="audio/"+g+"/"+m[k];AU.onerror=()=>{if(tok===SAYTOK)tts(k)};const p=AU.play();if(p)p.catch(()=>{if(tok===SAYTOK)tts(k)});return}catch(e){}}
   tts(k)}
-function tts(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/…/g,""));u.lang="fr-FR";u.rate=.8;const v=speechSynthesis.getVoices().find(x=>/^fr/i.test(x.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+function tts(t){const tok=SAYTOK;try{const u=new SpeechSynthesisUtterance(t.replace(/…/g,""));u.lang="fr-FR";u.rate=.8;const v=speechSynthesis.getVoices().find(x=>/^fr/i.test(x.lang));if(v)u.voice=v;setTimeout(()=>{if(tok===SAYTOK)speechSynthesis.speak(u)},60)}catch(e){}}
+function setDiff(){S.diff=S.diff==="hard"?"easy":"hard";save();quizV()}
+function hintOf(fr){const c=[...fr.replace(/…/g,"").trim()];return c.map((x,i)=>i===0?x:/[\p{L}]/u.test(x)?"_":x==" "?"  ":x).join(" ")}
+function diffBox(i){const hard=S.diff==="hard";return `<div style="margin:8px 0">${hard?"":`<div style="font-size:1.5rem;letter-spacing:.12em;color:var(--blue);font-weight:800">${hintOf(i.fr)}</div><div class="sub" style="margin:2px 0 4px">💡 第一个字母 · 一共 ${[...i.fr.replace(/[^\p{L}]/gu,"")].length} 个字母</div>`}<div class="btn alt" style="padding:6px 12px;font-size:.85rem" onclick="setDiff()">${hard?"🔥 困难模式：没有提示":"🌱 简单模式：提示首字母"}（切换）</div></div>`}
 const q1=s=>String(s).replace(/'/g,"\\'");
 /* ---------- données dérivées ---------- */
 const ALL=THEMES.flatMap(t=>t.items.map(i=>Object.assign({th:t.id},i)));
@@ -201,7 +206,7 @@ function quizV(){if(!Q)return home();if(Q.k>=Q.list.length)return quizEnd();
   else if(t==="au")h=`<div class="em">🔊</div><div class="btn" onclick="say('${q1(i.fr)}')">▶ 播放</div><div class="sub">听一听，选出你听到的词</div><div class="opts">${mk([i,...distract(i,"fr")],"fr")}</div>`;
   else if(t==="ar"){const g=gOf(i),base=i.fr.replace(/^(le|la|l') ?/,""),els=/^[aeiouyhâàéèêîôûœ]/i.test(base);const opts=["un","une"];
     h=`<div class="em">${i.e}</div><div class="big">… ${base}</div><div class="sub">${i.zh} · 选出正确的不定冠词（un 阳性 / une 阴性）</div><div class="opts">${opts.map(o=>`<button class="opt" onclick="answer(this,${(o==="un")===(g==="m")?1:0},'${o==="un"?"un":"une"}','${g==="m"?"un":"une"}')">${o}</button>`).join("")}</div>`}
-  else h=`<div class="em">${i.e}</div><div class="big">${i.zh}</div><div class="sub">拼写出法语（注意重音）</div><input class="inp" id="ty" autocomplete="off" autocapitalize="none" spellcheck="false" onkeydown="if(event.key==='Enter')tyCheck()"><div class="acc">${["é","è","ê","à","â","ç","î","ô","ù","û","œ"].map(c=>`<span onclick="insA('${c}')">${c}</span>`).join("")}</div><div style="margin-top:12px" id="tyb"><div class="btn" onclick="tyCheck()">检查</div> <div class="btn alt" onclick="tyGive()">不知道</div></div>`;
+  else h=`<div class="em">${i.e}</div><div class="big">${i.zh}</div><div class="sub">拼写出法语（注意重音）</div>${diffBox(i)}<input class="inp" id="ty" autocomplete="off" autocapitalize="none" spellcheck="false" onkeydown="if(event.key==='Enter')tyCheck()"><div class="acc">${["é","è","ê","à","â","ç","î","ô","ù","û","œ"].map(c=>`<span onclick="insA('${c}')">${c}</span>`).join("")}</div><div style="margin-top:12px" id="tyb"><div class="btn" onclick="tyCheck()">检查</div> <div class="btn alt" onclick="tyGive()">不知道</div></div>`;
   $.innerHTML=`<div class="col"><div class="qh"><div class="btn alt" onclick="if(confirm('退出测验？'))home()">✕</div>${bar(Q.k/Q.list.length*100)}<b>${Q.k+1}/${Q.list.length}</b></div><div class="q" id="qb">${h}<div class="fb" id="fb"></div><div id="nx"></div></div></div>`;
   if(t==="au")setTimeout(()=>say(i.fr),300);if(t==="ty")setTimeout(()=>{const e=document.getElementById("ty");e&&e.focus()},50)}
 function insA(c){const e=document.getElementById("ty");e.value+=c;e.focus()}
