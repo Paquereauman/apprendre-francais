@@ -89,7 +89,7 @@ nav#bn div{text-align:center;padding:10px 2px;font-size:.85rem;font-weight:600;c
 const $=document.getElementById("app"),tdy=()=>new Date().toISOString().slice(0,10);
 let S=null;try{S=JSON.parse(localStorage.getItem("frA1")||"null")}catch(e){}
 S=Object.assign({xp:0,ev:{},rev:{},streak:0,last:"",day:null,ipa:true,ts:0},S||{});
-const API=location.hostname.endsWith("github.io")?"https://chinois.45-192-198-98.sslip.io/api.php":"api.php";
+const API=location.hostname.endsWith("github.io")?"https://chinois.122-10-114-57.sslip.io/api.php":"api.php";
 const rndCode=()=>[...crypto.getRandomValues(new Uint8Array(12))].map(b=>"abcdefghjkmnpqrstuvwxyz23456789"[b%31]).join("");
 let CODE="",PNAME="";try{CODE=localStorage.getItem("frCode")||"";PNAME=localStorage.getItem("frName")||""}catch(e){}
 if(!CODE){CODE=rndCode();try{localStorage.setItem("frCode",CODE)}catch(e){}}
